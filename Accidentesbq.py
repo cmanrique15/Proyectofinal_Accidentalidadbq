@@ -100,3 +100,34 @@ muertes_por_clase = df[df['GRAVEDAD_ACCIDENTE'] == 'muerto']['CLASE_ACCIDENTE'].
 # Tasa de mortalidad
 tasa_mortalidad = (muertes_por_clase / total_por_clase).sort_values(ascending=False)
 print(tasa_mortalidad)
+
+# Asegurar formato uniforme
+df['GRAVEDAD_ACCIDENTE'] = df['GRAVEDAD_ACCIDENTE'].str.strip().str.lower()  # herido / muerto
+df['DIRECCION ACCIDENTE'] = df['DIRECCION ACCIDENTE'].str.strip().str.upper()
+# Agrupar por dirección y tipo de gravedad (muerto/herido)
+zonas = df.groupby(['DIRECCION ACCIDENTE', 'GRAVEDAD_ACCIDENTE']).size().unstack(fill_value=0)
+
+# Asegurar que las columnas 'muerto' y 'herido' existen (por si no hay datos)
+for col in ['muerto', 'herido']:
+    if col not in zonas.columns:
+        zonas[col] = 0
+
+print("\n Total y tasa de mortalidad:")
+zonas['TOTAL_ACCIDENTES'] = zonas['muerto'] + zonas['herido'] #TOTAL_ACCIDENTES: suma de muertos y heridos por dirección
+zonas['TASA_MORTALIDAD_%'] = (zonas['muerto'] / zonas['TOTAL_ACCIDENTES']) * 100
+zonas['TASA_MORTALIDAD_%'] = zonas['TASA_MORTALIDAD_%'].round(2)
+
+# Top 10 direcciones con más muertes
+top_muertos = zonas.sort_values('muerto', ascending=False).head(10)
+print("\n Zonas con más víctimas fatales:")
+print(top_muertos[['muerto', 'TOTAL_ACCIDENTES']])
+
+# Top 10 direcciones con más accidentes (totales)
+top_accidentes = zonas.sort_values('TOTAL_ACCIDENTES', ascending=False).head(10)
+print("\n Zonas con más accidentes totales:")
+print(top_accidentes[['TOTAL_ACCIDENTES', 'muerto']])
+
+# Top zonas con mayor tasa de mortalidad (%)
+top_tasa = zonas[zonas['TOTAL_ACCIDENTES'] >= 5].sort_values('TASA_MORTALIDAD_%', ascending=False).head(10)
+print("\n Zonas con mayor tasa de mortalidad (%):")
+print(top_tasa[['TASA_MORTALIDAD_%', 'TOTAL_ACCIDENTES']])
