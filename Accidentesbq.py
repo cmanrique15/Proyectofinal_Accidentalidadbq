@@ -148,3 +148,19 @@ for bar in bars:
              str(int(width)), va='center')
 
 plt.show()
+
+# Visualización para la cantidad total de accidentes:
+plt.figure(figsize=(12, 6))
+bars_total = plt.barh(top_accidentes.index, top_accidentes['TOTAL_ACCIDENTES'], color='skyblue')
+plt.xlabel('Cantidad total de accidentes')
+plt.title('Zonas con mayor cantidad total de accidentes')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+
+# Etiquetas numéricas
+for bar in bars_total:
+    width = bar.get_width()
+    plt.text(width + 1, bar.get_y() + bar.get_height()/2,
+             str(int(width)), va='center')
+
+plt.show()
