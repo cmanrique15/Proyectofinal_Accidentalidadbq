@@ -148,3 +148,77 @@ for bar in bars:
              str(int(width)), va='center')
 
 plt.show()
+
+# Visualización para la cantidad total de accidentes:
+plt.figure(figsize=(12, 6))
+bars_total = plt.barh(top_accidentes.index, top_accidentes['TOTAL_ACCIDENTES'], color='skyblue')
+plt.xlabel('Cantidad total de accidentes')
+plt.title('Zonas con mayor cantidad total de accidentes')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+
+# Etiquetas numéricas
+for bar in bars_total:
+    width = bar.get_width()
+    plt.text(width + 1, bar.get_y() + bar.get_height()/2,
+             str(int(width)), va='center')
+
+plt.show()
+
+# Visualización de la tasa de mortalidad
+plt.figure(figsize=(12, 6))
+bars_tasa = plt.barh(top_tasa.index, top_tasa['TASA_MORTALIDAD_%'], color='orange')
+plt.xlabel('Tasa de mortalidad (%)')
+plt.title('Zonas con mayor tasa de mortalidad (con al menos 5 accidentes)')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+
+# Etiquetas con porcentaje
+for bar in bars_tasa:
+    width = bar.get_width()
+    plt.text(width + 0.5, bar.get_y() + bar.get_height()/2, f'{width:.2f}%', va='center')
+
+plt.show()
+
+# Calculos para Hipotesis 2
+# Asegurar formato
+df['GRAVEDAD_ACCIDENTE'] = df['GRAVEDAD_ACCIDENTE'].str.strip().str.lower()
+df['CONDICION_VICTIMA'] = df['CONDICION_VICTIMA'].str.strip().str.lower()
+
+# Crear subconjuntos para los grupos clave
+moto_joven = df[(df['CONDICION_VICTIMA'] == 'motociclista') & (df['EDAD_VICTIMA'] >= 18) & (df['EDAD_VICTIMA'] <= 30)]
+peaton_mayor = df[(df['CONDICION_VICTIMA'] == 'peaton') & (df['EDAD_VICTIMA'] > 60)]
+
+# Calcular tasas de mortalidad
+def calcular_tasa(df_grupo, nombre):
+    total = len(df_grupo)
+    muertos = len(df_grupo[df_grupo['GRAVEDAD_ACCIDENTE'] == 'muerto'])
+    tasa = (muertos / total) * 100 if total > 0 else 0
+    print(f"{nombre} - Total: {total}, Muertos: {muertos}, Tasa de mortalidad: {tasa:.2f}%")
+        
+# Código para comparación con la tasa general de mortalidad:
+total = len(df)
+muertos = len(df[df['GRAVEDAD_ACCIDENTE'] == 'muerto'])
+tasa_general = (muertos / total) * 100
+print(f"\nTasa general de mortalidad en el dataset: {tasa_general:.2f}%")
+
+# Tasa general de mortalidad por condicion_victima:
+# Calcular tasa de mortalidad por rol
+roles = df.groupby('CONDICION_VICTIMA')['GRAVEDAD_ACCIDENTE'].value_counts().unstack(fill_value=0)
+roles['TASA_MORTALIDAD_%'] = (roles['muerto'] / (roles['muerto'] + roles['herido'])) * 100
+roles = roles.sort_values('TASA_MORTALIDAD_%', ascending=False)
+print(" Tasa de mortalidad por rol de víctima:\n")
+print(roles[['muerto', 'herido', 'TASA_MORTALIDAD_%']])
+
+# Tasa de mortalidad por Rango_Edad:
+# Calcular tasa de mortalidad por rango de edad
+edades = df.groupby('RANGO_EDAD')['GRAVEDAD_ACCIDENTE'].value_counts().unstack(fill_value=0)
+edades['TASA_MORTALIDAD_%'] = (edades['muerto'] / (edades['muerto'] + edades['herido'])) * 100
+edades = edades.sort_values('TASA_MORTALIDAD_%', ascending=False)
+print("\n Tasa de mortalidad por rango de edad:\n")
+print(edades[['muerto', 'herido', 'TASA_MORTALIDAD_%']])
+
+# Mostrar resultados
+print("Tasa de mortalidad por grupo:\n")
+calcular_tasa(moto_joven, "Motociclistas jóvenes (18-30 años)")
+calcular_tasa(peaton_mayor, "Peatones mayores de 60 años")
