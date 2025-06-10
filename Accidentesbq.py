@@ -131,3 +131,20 @@ print(top_accidentes[['TOTAL_ACCIDENTES', 'muerto']])
 top_tasa = zonas[zonas['TOTAL_ACCIDENTES'] >= 5].sort_values('TASA_MORTALIDAD_%', ascending=False).head(10)
 print("\n Zonas con mayor tasa de mortalidad (%):")
 print(top_tasa[['TASA_MORTALIDAD_%', 'TOTAL_ACCIDENTES']])
+
+# Visualización Hipotesis 1 
+# Visualización para Top 10 zonas con más muertes:
+plt.figure(figsize=(12, 6))
+bars = plt.barh(top_muertos.index, top_muertos['muerto'], color='pink')
+plt.xlabel('Cantidad de fallecidos')
+plt.title('Zonas con mayor cantidad de víctimas fatales')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+
+# Etiquetas numéricas al final de cada barra
+for bar in bars:
+    width = bar.get_width()
+    plt.text(width + 1, bar.get_y() + bar.get_height()/2,
+             str(int(width)), va='center')
+
+plt.show()
