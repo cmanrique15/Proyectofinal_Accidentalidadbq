@@ -179,3 +179,24 @@ for bar in bars_tasa:
     plt.text(width + 0.5, bar.get_y() + bar.get_height()/2, f'{width:.2f}%', va='center')
 
 plt.show()
+
+# Calculos para Hipotesis 2
+# Asegurar formato
+df['GRAVEDAD_ACCIDENTE'] = df['GRAVEDAD_ACCIDENTE'].str.strip().str.lower()
+df['CONDICION_VICTIMA'] = df['CONDICION_VICTIMA'].str.strip().str.lower()
+
+# Crear subconjuntos para los grupos clave
+moto_joven = df[(df['CONDICION_VICTIMA'] == 'motociclista') & (df['EDAD_VICTIMA'] >= 18) & (df['EDAD_VICTIMA'] <= 30)]
+peaton_mayor = df[(df['CONDICION_VICTIMA'] == 'peaton') & (df['EDAD_VICTIMA'] > 60)]
+
+# Calcular tasas de mortalidad
+def calcular_tasa(df_grupo, nombre):
+    total = len(df_grupo)
+    muertos = len(df_grupo[df_grupo['GRAVEDAD_ACCIDENTE'] == 'muerto'])
+    tasa = (muertos / total) * 100 if total > 0 else 0
+    print(f"{nombre} - Total: {total}, Muertos: {muertos}, Tasa de mortalidad: {tasa:.2f}%")
+
+# Mostrar resultados
+print("Tasa de mortalidad por grupo:\n")
+calcular_tasa(moto_joven, "Motociclistas jóvenes (18-30 años)")
+calcular_tasa(peaton_mayor, "Peatones mayores de 60 años")
