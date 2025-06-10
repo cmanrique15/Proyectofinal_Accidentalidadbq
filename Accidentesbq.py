@@ -164,3 +164,18 @@ for bar in bars_total:
              str(int(width)), va='center')
 
 plt.show()
+
+# Visualización de la tasa de mortalidad
+plt.figure(figsize=(12, 6))
+bars_tasa = plt.barh(top_tasa.index, top_tasa['TASA_MORTALIDAD_%'], color='orange')
+plt.xlabel('Tasa de mortalidad (%)')
+plt.title('Zonas con mayor tasa de mortalidad (con al menos 5 accidentes)')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+
+# Etiquetas con porcentaje
+for bar in bars_tasa:
+    width = bar.get_width()
+    plt.text(width + 0.5, bar.get_y() + bar.get_height()/2, f'{width:.2f}%', va='center')
+
+plt.show()
