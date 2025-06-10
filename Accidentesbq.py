@@ -100,3 +100,20 @@ muertes_por_clase = df[df['GRAVEDAD_ACCIDENTE'] == 'muerto']['CLASE_ACCIDENTE'].
 # Tasa de mortalidad
 tasa_mortalidad = (muertes_por_clase / total_por_clase).sort_values(ascending=False)
 print(tasa_mortalidad)
+
+# Visualización Hipotesis 1 
+# Visualización para Top 10 zonas con más muertes:
+plt.figure(figsize=(12, 6))
+bars = plt.barh(top_muertos.index, top_muertos['muerto'], color='pink')
+plt.xlabel('Cantidad de fallecidos')
+plt.title('Zonas con mayor cantidad de víctimas fatales')
+plt.gca().invert_yaxis()
+plt.tight_layout()
+
+# Etiquetas numéricas al final de cada barra
+for bar in bars:
+    width = bar.get_width()
+    plt.text(width + 1, bar.get_y() + bar.get_height()/2,
+             str(int(width)), va='center')
+
+plt.show()
