@@ -86,3 +86,17 @@ df['RANGO_EDAD'] = pd.cut(df['EDAD_VICTIMA'], bins=bins, labels=labels)
 
 #Guardar base de datos limpia con los cambios aplicados
 df.to_csv('accidentesbq_limpio.csv', index=False)
+
+# Hipótesis 1: Zonas con mayor cantidad de víctimas fatales Análisis de datos
+print("\nConteo de muertes por tipo de accidente")
+muertes_por_clase = df[df['GRAVEDAD_ACCIDENTE'] == 'muerto']['CLASE_ACCIDENTE'].value_counts()
+print(muertes_por_clase)
+
+print("\nTasa de mortalidad por tipo de accidente - compara cuántas muertes hay en proporción al total de accidentes de cada tipo")
+# Total de accidentes por tipo
+total_por_clase = df['CLASE_ACCIDENTE'].value_counts()
+# Muertes por tipo
+muertes_por_clase = df[df['GRAVEDAD_ACCIDENTE'] == 'muerto']['CLASE_ACCIDENTE'].value_counts()
+# Tasa de mortalidad
+tasa_mortalidad = (muertes_por_clase / total_por_clase).sort_values(ascending=False)
+print(tasa_mortalidad)
