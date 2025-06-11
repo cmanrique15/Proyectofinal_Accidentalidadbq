@@ -33,6 +33,8 @@ print(df.dtypes)
 df[['FECHA', 'HORA']] = df['FECHA_ACCIDENTE'].str.split(' ', n=1, expand=True)
 df['FECHA'] = pd.to_datetime(df['FECHA'], format= '%m/%d/%Y', errors='coerce')
 
+# Filtrar solo los años entre 2021 y 2025
+df = df[(df['FECHA'].dt.year >= 2021) & (df['FECHA'].dt.year <= 2025)]
 # Eliminar la columna 'HORA' si ya no es necesaria
 df.drop('HORA', axis=1, inplace=True)    
 df.drop('FECHA_ACCIDENTE', axis=1, inplace=True)
@@ -179,3 +181,73 @@ for bar in bars_tasa:
     plt.text(width + 0.5, bar.get_y() + bar.get_height()/2, f'{width:.2f}%', va='center')
 
 plt.show()
+
+# Calculos para Hipotesis 2
+# Asegurar formato
+df['GRAVEDAD_ACCIDENTE'] = df['GRAVEDAD_ACCIDENTE'].str.strip().str.lower()
+df['CONDICION_VICTIMA'] = df['CONDICION_VICTIMA'].str.strip().str.lower()
+
+# Crear subconjuntos para los grupos clave
+moto_joven = df[(df['CONDICION_VICTIMA'] == 'motociclista') & (df['EDAD_VICTIMA'] >= 18) & (df['EDAD_VICTIMA'] <= 30)]
+peaton_mayor = df[(df['CONDICION_VICTIMA'] == 'peaton') & (df['EDAD_VICTIMA'] > 60)]
+
+# Calcular tasas de mortalidad
+def calcular_tasa(df_grupo, nombre):
+    total = len(df_grupo)
+    muertos = len(df_grupo[df_grupo['GRAVEDAD_ACCIDENTE'] == 'muerto'])
+    tasa = (muertos / total) * 100 if total > 0 else 0
+    print(f"{nombre} - Total: {total}, Muertos: {muertos}, Tasa de mortalidad: {tasa:.2f}%")
+        
+# Código para comparación con la tasa general de mortalidad:
+total = len(df)
+muertos = len(df[df['GRAVEDAD_ACCIDENTE'] == 'muerto'])
+tasa_general = (muertos / total) * 100
+print(f"\nTasa general de mortalidad en el dataset: {tasa_general:.2f}%")
+
+# Tasa general de mortalidad por condicion_victima:
+# Calcular tasa de mortalidad por rol
+roles = df.groupby('CONDICION_VICTIMA')['GRAVEDAD_ACCIDENTE'].value_counts().unstack(fill_value=0)
+roles['TASA_MORTALIDAD_%'] = (roles['muerto'] / (roles['muerto'] + roles['herido'])) * 100
+roles = roles.sort_values('TASA_MORTALIDAD_%', ascending=False)
+print(" Tasa de mortalidad por rol de víctima:\n")
+print(roles[['muerto', 'herido', 'TASA_MORTALIDAD_%']])
+
+# Tasa de mortalidad por Rango_Edad:
+# Calcular tasa de mortalidad por rango de edad
+edades = df.groupby('RANGO_EDAD')['GRAVEDAD_ACCIDENTE'].value_counts().unstack(fill_value=0)
+edades['TASA_MORTALIDAD_%'] = (edades['muerto'] / (edades['muerto'] + edades['herido'])) * 100
+edades = edades.sort_values('TASA_MORTALIDAD_%', ascending=False)
+print("\n Tasa de mortalidad por rango de edad:\n")
+print(edades[['muerto', 'herido', 'TASA_MORTALIDAD_%']])
+
+# Mostrar resultados
+print("Tasa de mortalidad por grupo:\n")
+calcular_tasa(moto_joven, "Motociclistas jóvenes (18-30 años)")
+calcular_tasa(peaton_mayor, "Peatones mayores de 60 años")
+
+# Estadísticas Hipótesis 2
+
+# 1. Medidas generales
+# Estadísticas generales de EDAD_VICTIMA
+print("Media:", df['EDAD_VICTIMA'].mean())
+print("Mediana:", df['EDAD_VICTIMA'].median())
+print("Moda:", df['EDAD_VICTIMA'].mode()[0])
+print("Desviación estándar:", df['EDAD_VICTIMA'].std())
+print("Cuartiles:\n", df['EDAD_VICTIMA'].quantile([0.25, 0.5, 0.75]))
+# 2. Comparar estadísticas entre muertos y heridos:
+df.groupby('GRAVEDAD_ACCIDENTE')['EDAD_VICTIMA'].describe()
+
+# Análisis de distribuciones
+# Histograma de edades de las víctimas según gravedad del accidente
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.histplot(data=df, x='EDAD_VICTIMA', hue='GRAVEDAD_ACCIDENTE', kde=True)
+plt.title("Distribución de edades según gravedad")
+plt.show()
+
+# ¿A que tipo de distribución se ajustan los datos?
+from scipy.stats import shapiro, normaltest
+
+# Solo edades
+stat, p = shapiro(df['EDAD_VICTIMA'])
+print("Shapiro-Wilk p-value:", p)
