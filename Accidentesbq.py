@@ -302,3 +302,17 @@ plt.ylabel('Condición de la víctima')
 plt.xlabel('Rango de edad')
 plt.tight_layout()
 plt.show()
+
+# 6 Distribución por sexo y condición
+plt.figure()
+sns.countplot(data=df, x='SEXO_VICTIMA', hue='CONDICION_VICTIMA')
+plt.title('Sexo vs Rol en el Accidente')
+plt.show()
+
+# 7 Distribución por tipo de accidente
+plt.figure()
+sns.countplot(data=df, x='CLASE_ACCIDENTE', order=df['CLASE_ACCIDENTE'].value_counts().index)
+plt.title('Tipos de Accidente')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
