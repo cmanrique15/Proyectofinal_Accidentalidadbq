@@ -195,6 +195,28 @@ def calcular_tasa(df_grupo, nombre):
     muertos = len(df_grupo[df_grupo['GRAVEDAD_ACCIDENTE'] == 'muerto'])
     tasa = (muertos / total) * 100 if total > 0 else 0
     print(f"{nombre} - Total: {total}, Muertos: {muertos}, Tasa de mortalidad: {tasa:.2f}%")
+        
+# Código para comparación con la tasa general de mortalidad:
+total = len(df)
+muertos = len(df[df['GRAVEDAD_ACCIDENTE'] == 'muerto'])
+tasa_general = (muertos / total) * 100
+print(f"\nTasa general de mortalidad en el dataset: {tasa_general:.2f}%")
+
+# Tasa general de mortalidad por condicion_victima:
+# Calcular tasa de mortalidad por rol
+roles = df.groupby('CONDICION_VICTIMA')['GRAVEDAD_ACCIDENTE'].value_counts().unstack(fill_value=0)
+roles['TASA_MORTALIDAD_%'] = (roles['muerto'] / (roles['muerto'] + roles['herido'])) * 100
+roles = roles.sort_values('TASA_MORTALIDAD_%', ascending=False)
+print(" Tasa de mortalidad por rol de víctima:\n")
+print(roles[['muerto', 'herido', 'TASA_MORTALIDAD_%']])
+
+# Tasa de mortalidad por Rango_Edad:
+# Calcular tasa de mortalidad por rango de edad
+edades = df.groupby('RANGO_EDAD')['GRAVEDAD_ACCIDENTE'].value_counts().unstack(fill_value=0)
+edades['TASA_MORTALIDAD_%'] = (edades['muerto'] / (edades['muerto'] + edades['herido'])) * 100
+edades = edades.sort_values('TASA_MORTALIDAD_%', ascending=False)
+print("\n Tasa de mortalidad por rango de edad:\n")
+print(edades[['muerto', 'herido', 'TASA_MORTALIDAD_%']])
 
 # Mostrar resultados
 print("Tasa de mortalidad por grupo:\n")
