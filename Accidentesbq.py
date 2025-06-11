@@ -316,3 +316,46 @@ plt.title('Tipos de Accidente')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
+
+# Modelados
+# Modelo 1 Random Forest para predecir la gravedad del accidente (modelo de clasificación supervisada)
+
+# Importar librerias necesarias
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+
+#Cargar y limpiar datos,
+df['GRAVEDAD_BINARIA'] = df['GRAVEDAD_ACCIDENTE'].apply(lambda x: 1 if x == 'muerto' else 0)
+
+#Variables predictoras (puedes ajustar según tus datos),
+variables = ['SEXO_VICTIMA', 'EDAD_VICTIMA', 'CONDICION_VICTIMA', 'CLASE_ACCIDENTE', 'DIA_SEMANA']
+
+#Quitar filas con valores faltantes,
+df_modelo = df[variables + ['GRAVEDAD_BINARIA']].dropna()
+
+#convertimos las variables de texto a numero (columna binaria 0 o 1),
+df_modelo = pd.get_dummies(df_modelo, columns=['SEXO_VICTIMA', 'CONDICION_VICTIMA', 'CLASE_ACCIDENTE', 'DIA_SEMANA'], drop_first=True)
+
+#Separar X e y,
+X = df_modelo.drop('GRAVEDAD_BINARIA', axis=1) #todo menos la columna de gravedad
+y = df_modelo['GRAVEDAD_BINARIA']
+
+#Dividir en conjunto de entrenamiento y prueba,
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+#entrenamiento del modelo
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+modelo.fit(X_train, y_train)
+
+#Hacer predicciones y evaluar el modelo
+y_pred = modelo.predict(X_test) 
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nReporte de clasificación:\n", classification_report(y_test, y_pred))
+
+from sklearn.metrics import ConfusionMatrixDisplay
+ConfusionMatrixDisplay.from_estimator(modelo, X_test, y_test, display_labels=["No Muerto", "Muerto"], cmap="Reds")
+plt.title("Matriz de Confusión")
+plt.show()
