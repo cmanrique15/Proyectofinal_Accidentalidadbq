@@ -224,3 +224,58 @@ print(edades[['muerto', 'herido', 'TASA_MORTALIDAD_%']])
 print("Tasa de mortalidad por grupo:\n")
 calcular_tasa(moto_joven, "Motociclistas jóvenes (18-30 años)")
 calcular_tasa(peaton_mayor, "Peatones mayores de 60 años")
+
+# Estadísticas Hipótesis 2
+
+# 1. Medidas generales
+# Estadísticas generales de EDAD_VICTIMA
+print("Media:", df['EDAD_VICTIMA'].mean())
+print("Mediana:", df['EDAD_VICTIMA'].median())
+print("Moda:", df['EDAD_VICTIMA'].mode()[0])
+print("Desviación estándar:", df['EDAD_VICTIMA'].std())
+print("Cuartiles:\n", df['EDAD_VICTIMA'].quantile([0.25, 0.5, 0.75]))
+# 2. Comparar estadísticas entre muertos y heridos:
+df.groupby('GRAVEDAD_ACCIDENTE')['EDAD_VICTIMA'].describe()
+
+# Análisis de distribuciones
+# Histograma de edades de las víctimas según gravedad del accidente
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.histplot(data=df, x='EDAD_VICTIMA', hue='GRAVEDAD_ACCIDENTE', kde=True)
+plt.title("Distribución de edades según gravedad")
+plt.show()
+
+# ¿A que tipo de distribución se ajustan los datos?
+from scipy.stats import shapiro, normaltest
+
+# Solo edades
+stat, p = shapiro(df['EDAD_VICTIMA'])
+print("Shapiro-Wilk p-value:", p)
+
+#Visualizaciones Hipótesis 2
+# 1 Distribución de gravedad
+plt.figure()
+sns.countplot(data=df, x='GRAVEDAD_ACCIDENTE')
+plt.title('Distribución de Gravedad del Accidente')
+plt.show()
+
+# 2 Gravedad vs Rango de Edad
+plt.figure(figsize=(8,5))
+sns.countplot(data=df, x='RANGO_EDAD', hue='GRAVEDAD_ACCIDENTE', palette='Set2')
+plt.title("Gravedad del accidente por rango de edad")
+plt.xlabel("Rango de edad")
+plt.ylabel("Cantidad")
+plt.legend(title='Gravedad')
+plt.tight_layout()
+plt.show()
+
+# 3 Gravedad vs Condición de la víctima
+plt.figure(figsize=(10,5))
+sns.countplot(data=df, x='CONDICION_VICTIMA', hue='GRAVEDAD_ACCIDENTE', palette='Set1')
+plt.title("Gravedad del accidente por tipo de víctima")
+plt.xlabel("Condición de la víctima")
+plt.ylabel("Cantidad")
+plt.xticks(rotation=45)
+plt.legend(title='Gravedad')
+plt.tight_layout()
+plt.show()
