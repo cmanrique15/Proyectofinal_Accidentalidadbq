@@ -33,6 +33,8 @@ print(df.dtypes)
 df[['FECHA', 'HORA']] = df['FECHA_ACCIDENTE'].str.split(' ', n=1, expand=True)
 df['FECHA'] = pd.to_datetime(df['FECHA'], format= '%m/%d/%Y', errors='coerce')
 
+# Filtrar solo los años entre 2021 y 2025
+df = df[(df['FECHA'].dt.year >= 2021) & (df['FECHA'].dt.year <= 2025)]
 # Eliminar la columna 'HORA' si ya no es necesaria
 df.drop('HORA', axis=1, inplace=True)    
 df.drop('FECHA_ACCIDENTE', axis=1, inplace=True)
