@@ -251,3 +251,54 @@ from scipy.stats import shapiro, normaltest
 # Solo edades
 stat, p = shapiro(df['EDAD_VICTIMA'])
 print("Shapiro-Wilk p-value:", p)
+
+#Visualizaciones Hipótesis 2
+# 1 Distribución de gravedad
+plt.figure()
+sns.countplot(data=df, x='GRAVEDAD_ACCIDENTE')
+plt.title('Distribución de Gravedad del Accidente')
+plt.show()
+
+# 2 Gravedad vs Rango de Edad
+plt.figure(figsize=(8,5))
+sns.countplot(data=df, x='RANGO_EDAD', hue='GRAVEDAD_ACCIDENTE', palette='Set2')
+plt.title("Gravedad del accidente por rango de edad")
+plt.xlabel("Rango de edad")
+plt.ylabel("Cantidad")
+plt.legend(title='Gravedad')
+plt.tight_layout()
+plt.show()
+
+# 3 Gravedad vs Condición de la víctima
+plt.figure(figsize=(10,5))
+sns.countplot(data=df, x='CONDICION_VICTIMA', hue='GRAVEDAD_ACCIDENTE', palette='Set1')
+plt.title("Gravedad del accidente por tipo de víctima")
+plt.xlabel("Condición de la víctima")
+plt.ylabel("Cantidad")
+plt.xticks(rotation=45)
+plt.legend(title='Gravedad')
+plt.tight_layout()
+plt.show()
+
+# 4 Gravedad según edad y condición
+plt.figure()
+sns.boxplot(data=df[df['GRAVEDAD_ACCIDENTE'] != 'ileso'], x='CONDICION_VICTIMA', y='EDAD_VICTIMA', hue='GRAVEDAD_ACCIDENTE')
+plt.title("Edad y Gravedad según condición")
+plt.xticks(rotation=45)
+plt.show()
+
+# 5 Mapa de calor
+heatmap_data = df.pivot_table(
+    values='GRAVEDAD_ACCIDENTE',
+    index='CONDICION_VICTIMA',
+    columns='RANGO_EDAD',
+    aggfunc=lambda x: (x == 'muerto').mean()
+)
+
+plt.figure(figsize=(10, 6))
+sns.heatmap(heatmap_data, annot=True, cmap='Reds', fmt=".2f")
+plt.title('Proporción de fallecidos por condición y rango de edad')
+plt.ylabel('Condición de la víctima')
+plt.xlabel('Rango de edad')
+plt.tight_layout()
+plt.show()
