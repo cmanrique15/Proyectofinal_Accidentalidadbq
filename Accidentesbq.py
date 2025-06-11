@@ -359,3 +359,36 @@ from sklearn.metrics import ConfusionMatrixDisplay
 ConfusionMatrixDisplay.from_estimator(modelo, X_test, y_test, display_labels=["No Muerto", "Muerto"], cmap="Reds")
 plt.title("Matriz de Confusión")
 plt.show()
+
+# Modelo 2 K-means: Clustering de zonas por frecuencia de accidentes
+
+from sklearn.cluster import KMeans
+import numpy as np
+ 
+# Preparamos los datos: agrupamos por dirección y día de la semana
+zonas_frecuencia = df.groupby(['DIRECCION ACCIDENTE', 'DIA_SEMANA']).size().reset_index(name='FRECUENCIA')
+ 
+# Convertimos los días a números para el modelo
+dias_map = {'Monday':0, 'Tuesday':1, 'Wednesday':2, 'Thursday':3, 'Friday':4, 'Saturday':5, 'Sunday':6}
+zonas_frecuencia['DIA_NUM'] = zonas_frecuencia['DIA_SEMANA'].map(dias_map)
+ 
+# Seleccionamos las variables para clustering
+X_cluster = zonas_frecuencia[['FRECUENCIA', 'DIA_NUM']]
+ 
+# Elegimos el número de clusters (puedes ajustar este valor)
+kmeans = KMeans(n_clusters=4, random_state=42)
+zonas_frecuencia['CLUSTER'] = kmeans.fit_predict(X_cluster)
+ 
+# Visualización de los clusters
+plt.figure(figsize=(10,6))
+sns.scatterplot(data=zonas_frecuencia, x='DIA_NUM', y='FRECUENCIA', hue='CLUSTER', palette='Set2')
+plt.title('Clusters de frecuencia de accidentes por día y zona')
+plt.xlabel('Día de la semana (0=Lunes)')
+plt.ylabel('Frecuencia de accidentes')
+plt.show()
+ 
+# Mostrar las zonas más críticas de cada cluster
+for c in zonas_frecuencia['CLUSTER'].unique():
+    top_zonas = zonas_frecuencia[zonas_frecuencia['CLUSTER'] == c].sort_values('FRECUENCIA', ascending=False).head(3)
+    print(f"\nCluster {c} - Zonas y días más críticos:")
+    print(top_zonas[['DIRECCION ACCIDENTE', 'DIA_SEMANA', 'FRECUENCIA']])
