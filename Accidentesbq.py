@@ -224,3 +224,30 @@ print(edades[['muerto', 'herido', 'TASA_MORTALIDAD_%']])
 print("Tasa de mortalidad por grupo:\n")
 calcular_tasa(moto_joven, "Motociclistas jóvenes (18-30 años)")
 calcular_tasa(peaton_mayor, "Peatones mayores de 60 años")
+
+# Estadísticas Hipótesis 2
+
+# 1. Medidas generales
+# Estadísticas generales de EDAD_VICTIMA
+print("Media:", df['EDAD_VICTIMA'].mean())
+print("Mediana:", df['EDAD_VICTIMA'].median())
+print("Moda:", df['EDAD_VICTIMA'].mode()[0])
+print("Desviación estándar:", df['EDAD_VICTIMA'].std())
+print("Cuartiles:\n", df['EDAD_VICTIMA'].quantile([0.25, 0.5, 0.75]))
+# 2. Comparar estadísticas entre muertos y heridos:
+df.groupby('GRAVEDAD_ACCIDENTE')['EDAD_VICTIMA'].describe()
+
+# Análisis de distribuciones
+# Histograma de edades de las víctimas según gravedad del accidente
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.histplot(data=df, x='EDAD_VICTIMA', hue='GRAVEDAD_ACCIDENTE', kde=True)
+plt.title("Distribución de edades según gravedad")
+plt.show()
+
+# ¿A que tipo de distribución se ajustan los datos?
+from scipy.stats import shapiro, normaltest
+
+# Solo edades
+stat, p = shapiro(df['EDAD_VICTIMA'])
+print("Shapiro-Wilk p-value:", p)
