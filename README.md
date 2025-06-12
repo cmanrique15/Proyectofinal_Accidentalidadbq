@@ -53,7 +53,7 @@ Analizar y visualizar los patrones de accidentalidad vial en Barranquilla, ident
    Se utilizaron gráficos para evidenciar patrones de mortalidad, frecuencia y zonas de riesgo.
 
 5. **Modelado predictivo:**  
-   Se aplicaron modelos como árboles de decisión, random forest y análisis de mortalidad por zonas.
+   Se aplicaron modelos como árboles de decisión, random forest y análisis de mortalidad por zonas, K-Means.
 
 ---
 ### 🔧 **Stack Tecnológico**
