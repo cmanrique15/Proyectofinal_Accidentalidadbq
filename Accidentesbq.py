@@ -104,9 +104,9 @@ print(tasa_mortalidad)
 
 # Asegurar formato uniforme
 df['GRAVEDAD_ACCIDENTE'] = df['GRAVEDAD_ACCIDENTE'].str.strip().str.lower()  # herido / muerto
-df['DIRECCION ACCIDENTE'] = df['DIRECCION ACCIDENTE'].str.strip().str.upper()
+df['DIRECCION_ACCIDENTE'] = df['DIRECCION_ACCIDENTE'].str.strip().str.upper()
 # Agrupar por dirección y tipo de gravedad (muerto/herido)
-zonas = df.groupby(['DIRECCION ACCIDENTE', 'GRAVEDAD_ACCIDENTE']).size().unstack(fill_value=0)
+zonas = df.groupby(['DIRECCION_ACCIDENTE', 'GRAVEDAD_ACCIDENTE']).size().unstack(fill_value=0)
 
 # Asegurar que las columnas 'muerto' y 'herido' existen (por si no hay datos)
 for col in ['muerto', 'herido']:
@@ -249,7 +249,7 @@ from scipy.stats import shapiro, normaltest
 
 # Solo edades
 stat, p = shapiro(df['EDAD_VICTIMA'])
-print("Shapiro-Wilk p-value:", p)
+print("Shapiro-Wilk p-value:",p)
 
 #Visualizaciones Hipótesis 2
 # 1 Distribución de gravedad
@@ -365,7 +365,7 @@ from sklearn.cluster import KMeans
 import numpy as np
  
 # Preparamos los datos: agrupamos por dirección y día de la semana
-zonas_frecuencia = df.groupby(['DIRECCION ACCIDENTE', 'DIA_SEMANA']).size().reset_index(name='FRECUENCIA')
+zonas_frecuencia = df.groupby(['DIRECCION_ACCIDENTE', 'DIA_SEMANA']).size().reset_index(name='FRECUENCIA')
  
 # Convertimos los días a números para el modelo
 dias_map = {'Monday':0, 'Tuesday':1, 'Wednesday':2, 'Thursday':3, 'Friday':4, 'Saturday':5, 'Sunday':6}
@@ -390,4 +390,4 @@ plt.show()
 for c in zonas_frecuencia['CLUSTER'].unique():
     top_zonas = zonas_frecuencia[zonas_frecuencia['CLUSTER'] == c].sort_values('FRECUENCIA', ascending=False).head(3)
     print(f"\nCluster {c} - Zonas y días más críticos:")
-    print(top_zonas[['DIRECCION ACCIDENTE', 'DIA_SEMANA', 'FRECUENCIA']])
+    print(top_zonas[['DIRECCION_ACCIDENTE', 'DIA_SEMANA', 'FRECUENCIA']])
