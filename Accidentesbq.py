@@ -22,7 +22,7 @@ import seaborn as sns
 #creación Dataframe con pandas
 
 columnas = ['FECHA_ACCIDENTE', 'DIRECCION_ACCIDENTE', 'CONDICION_VICTIMA', 
-            'GRAVEDAD_ACCIDENTE', 'CLASE_ACCIDENTE', 'SEXO_VICTIMA', 'EDAD_VICTIMA','CANTIDAD_VICTIMAS']
+            'GRAVEDAD_ACCIDENTE', 'CLASE_ACCIDENTE', 'SEXO_VICTIMA', 'EDAD_VICTIMA','CANTIDAD_VICTIMA']
 
 df = pd.DataFrame(resultados, columns=columnas)
 
@@ -50,7 +50,7 @@ df =df.astype (
 })
 
 df['EDAD_VICTIMA'] = pd.to_numeric(df['EDAD_VICTIMA'], errors='coerce')
-df['CANTIDAD_VICTIMAS'] = pd.to_numeric(df['CANTIDAD_VICTIMAS'], errors='coerce')
+df['CANTIDAD_VICTIMA'] = pd.to_numeric(df['CANTIDAD_VICTIMA'], errors='coerce')
 
 print(df.info())
 
@@ -97,8 +97,7 @@ print(muertes_por_clase)
 print("\nTasa de mortalidad por tipo de accidente - compara cuántas muertes hay en proporción al total de accidentes de cada tipo")
 # Total de accidentes por tipo
 total_por_clase = df['CLASE_ACCIDENTE'].value_counts()
-# Muertes por tipo
-muertes_por_clase = df[df['GRAVEDAD_ACCIDENTE'] == 'muerto']['CLASE_ACCIDENTE'].value_counts()
+print(total_por_clase)
 # Tasa de mortalidad
 tasa_mortalidad = (muertes_por_clase / total_por_clase).sort_values(ascending=False)
 print(tasa_mortalidad)
