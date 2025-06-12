@@ -1,6 +1,6 @@
-# Análisis de Accidentalidad Vial en Barranquilla (2021–2025)
+# 🚗💥 Análisis de Accidentalidad Vial en Barranquilla (2021–2025)
 
-## Descripción del reto
+## 📊 Descripción del proyecto
 Este proyecto fue desarrollado por el equipo **DATA WIZARDS** con el propósito de analizar la accidentalidad vial en la ciudad de Barranquilla entre los años 2021 y 2025. El objetivo central es identificar factores que influyen en la **gravedad de los accidentes**, utilizando enfoques estadísticos, visuales y predictivos, con el fin de proponer soluciones basadas en evidencia para mejorar la seguridad vial.
 
 ---
