@@ -124,3 +124,30 @@ Analizar y visualizar los patrones de accidentalidad vial en Barranquilla, ident
 > - ✅ **Recomendaciones basadas en evidencia** para política pública
 
 ---
+**⭐ Si este proyecto te fue útil, ¡no olvides darle una estrella! ⭐**
+
+### 🤝 **Colabora con Nosotros**
+¿Interesado en colaborar? Contáctanos para proyectos de investigación en:
+- 🚦 Análisis de movilidad urbana
+- 📊 Ciencia de datos aplicada al transporte  
+- 🗺️ Sistemas de información geográfica
+- 🤖 Machine Learning para seguridad vial
+
+![Footer](https://img.shields.io/badge/Made%20with-%E2%9D%A4%EF%B8%8F-red.svg)
+![Colombia](https://img.shields.io/badge/Made%20in-Colombia%20🇨🇴-yellow.svg)
+![Research](https://img.shields.io/badge/Academic-Research-purple.svg)
+
+---
+
+### 📚 **Citar este Trabajo**
+```bibtex
+@misc{datawizards2025barranquilla,
+  title={Análisis de Accidentalidad Vial en Barranquilla (2021-2025)},
+  author={DATA WIZARDS Research Team},
+  year={2025},
+  publisher={Universidad del Atlántico},
+  url={https://github.com/datawizards/barranquilla-traffic-analysis}
+}
+```
+
+</div>
