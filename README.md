@@ -66,34 +66,58 @@ Analizar y visualizar los patrones de accidentalidad vial en Barranquilla, ident
 | **Fuente de Datos** | [Datos Abiertos Colombia](https://www.datos.gov.co/) 🇨🇴 |
 
 ---
-## Nuestro equipo
 
-| Nombre              | Rol                                      |
-|---------------------|-------------------------------------------|
-| Candy Manrique      | Project Manager                           |
-| Marcela Luna        | Scrum Master                              |
-| Tina Varela         | Directora de Calidad de Datos             |
-| Gina Ortega         | Directora de Análisis Predictivo          |
-| Sharon Varela       | Especialista en Modelamiento de Datos     |
-| Stefany Lozano      | Directora de Visualizaciones              |
-| Lina Piocuda        | Especialista en Diseño de Visualizaciones |
-| Martha Coronel      | Directora de Gestión de Datos             |
-| Karen Sanjuan       | Analista Documentadora                    |
-| Vanessa González    | Analista Documentadora                    |
+## 👥 **Nuestro Equipo - DATA WIZARDS**
+
+<div align="center">
+
+| **👤 Nombre** | **🎯 Rol** | **🔍 Especialidad** |
+|---------------|------------|---------------------|
+| **Candy Manrique** | 👑 Project Manager | Coordinación y Estrategia |
+| **Marcela Luna** | 🏃‍♀️ Scrum Master | Metodologías Ágiles |
+| **Tina Varela** | 🛡️ Directora de Calidad de Datos | Validación y Limpieza |
+| **Gina Ortega** | 🔮 Directora de Análisis Predictivo | Machine Learning |
+| **Sharon Varelo** | 📊 Especialista en Modelamiento | Estadística Avanzada |
+| **Stefany Lozano** | 🎨 Directora de Visualizaciones | Diseño de Gráficos |
+| **Lina Piocuda** | 🖼️ Especialista en Diseño Visual | UX/UI de Datos |
+| **Martha Coronel** | 💾 Directora de Gestión de Datos | Arquitectura de Datos |
+| **Karen Sanjuan** | 📝 Analista Documentadora | Documentación Técnica |
+| **Vanessa González** | 📋 Analista Documentadora | Reportes y Comunicación |
+
+</div>
 
 ---
 
-## Pasos realizados
+## 🚀 **Proceso de Desarrollo**
 
-1. Descarga y análisis exploratorio de los datos.
-2. Formulación de hipótesis basadas en el contexto vial.
-3. Limpieza y transformación de variables clave.
-4. Visualización de zonas con mayor número de accidentes.
-5. Cálculo de tasa de mortalidad por zona.
-6. Análisis por condición y edad de las víctimas.
-7. Evaluación de hipótesis con evidencia visual y cuantitativa.
-8. Elaboración del informe y conclusiones.
-9. Documentación colaborativa en equipo.
-10. Presentación del resultado final con visualizaciones interactivas.
+### **Fase 1: Preparación** 📋
+- [x] **Descarga y análisis exploratorio** de los datos
+- [x] **Formulación de hipótesis** basadas en el contexto vial
+- [x] **Limpieza y transformación** de variables clave
+
+### **Fase 2: Análisis** 🔍
+- [x] **Visualización de zonas** con mayor número de accidentes
+- [x] **Cálculo de tasa de mortalidad** por zona
+- [x] **Análisis por condición y edad** de las víctimas
+
+### **Fase 3: Validación** ✅
+- [x] **Evaluación de hipótesis** con evidencia visual y cuantitativa
+- [x] **Modelado predictivo** con algoritmos avanzados
+- [x] **Validación cruzada** de resultados
+
+### **Fase 4: Entrega** 🎯
+- [x] **Elaboración del informe** y conclusiones
+- [x] **Documentación colaborativa** en equipo
+- [x] **Presentación del resultado final** con visualizaciones interactivas
+
+---
+
+## 📈 **Resultados Destacados**
+
+> 🏆 **Logros del Proyecto:**
+> - ✅ Identificación de **zonas críticas** de accidentalidad
+> - ✅ Desarrollo de **modelos predictivos** con alta precisión
+> - ✅ **Visualizaciones interactivas** para tomadores de decisiones
+> - ✅ **Recomendaciones basadas en evidencia** para política pública
 
 ---
