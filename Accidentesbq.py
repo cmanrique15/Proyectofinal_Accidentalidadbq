@@ -22,7 +22,7 @@ import seaborn as sns
 #creación Dataframe con pandas
 
 columnas = ['FECHA_ACCIDENTE', 'DIRECCION_ACCIDENTE', 'CONDICION_VICTIMA', 
-            'GRAVEDAD_ACCIDENTE', 'CLASE_ACCIDENTE', 'SEXO_VICTIMA', 'EDAD_VICTIMA','CANTIDAD_VICTIMAS']
+            'GRAVEDAD_ACCIDENTE', 'CLASE_ACCIDENTE', 'SEXO_VICTIMA', 'EDAD_VICTIMA','CANTIDAD_VICTIMA']
 
 df = pd.DataFrame(resultados, columns=columnas)
 
@@ -50,7 +50,7 @@ df =df.astype (
 })
 
 df['EDAD_VICTIMA'] = pd.to_numeric(df['EDAD_VICTIMA'], errors='coerce')
-df['CANTIDAD_VICTIMAS'] = pd.to_numeric(df['CANTIDAD_VICTIMAS'], errors='coerce')
+df['CANTIDAD_VICTIMA'] = pd.to_numeric(df['CANTIDAD_VICTIMA'], errors='coerce')
 
 print(df.info())
 
@@ -97,17 +97,16 @@ print(muertes_por_clase)
 print("\nTasa de mortalidad por tipo de accidente - compara cuántas muertes hay en proporción al total de accidentes de cada tipo")
 # Total de accidentes por tipo
 total_por_clase = df['CLASE_ACCIDENTE'].value_counts()
-# Muertes por tipo
-muertes_por_clase = df[df['GRAVEDAD_ACCIDENTE'] == 'muerto']['CLASE_ACCIDENTE'].value_counts()
+print(total_por_clase)
 # Tasa de mortalidad
 tasa_mortalidad = (muertes_por_clase / total_por_clase).sort_values(ascending=False)
 print(tasa_mortalidad)
 
 # Asegurar formato uniforme
 df['GRAVEDAD_ACCIDENTE'] = df['GRAVEDAD_ACCIDENTE'].str.strip().str.lower()  # herido / muerto
-df['DIRECCION ACCIDENTE'] = df['DIRECCION ACCIDENTE'].str.strip().str.upper()
+df['DIRECCION_ACCIDENTE'] = df['DIRECCION_ACCIDENTE'].str.strip().str.upper()
 # Agrupar por dirección y tipo de gravedad (muerto/herido)
-zonas = df.groupby(['DIRECCION ACCIDENTE', 'GRAVEDAD_ACCIDENTE']).size().unstack(fill_value=0)
+zonas = df.groupby(['DIRECCION_ACCIDENTE', 'GRAVEDAD_ACCIDENTE']).size().unstack(fill_value=0)
 
 # Asegurar que las columnas 'muerto' y 'herido' existen (por si no hay datos)
 for col in ['muerto', 'herido']:
@@ -250,7 +249,7 @@ from scipy.stats import shapiro, normaltest
 
 # Solo edades
 stat, p = shapiro(df['EDAD_VICTIMA'])
-print("Shapiro-Wilk p-value:", p)
+print("Shapiro-Wilk p-value:",p)
 
 #Visualizaciones Hipótesis 2
 # 1 Distribución de gravedad
@@ -279,3 +278,116 @@ plt.xticks(rotation=45)
 plt.legend(title='Gravedad')
 plt.tight_layout()
 plt.show()
+
+# 4 Gravedad según edad y condición
+plt.figure()
+sns.boxplot(data=df[df['GRAVEDAD_ACCIDENTE'] != 'ileso'], x='CONDICION_VICTIMA', y='EDAD_VICTIMA', hue='GRAVEDAD_ACCIDENTE')
+plt.title("Edad y Gravedad según condición")
+plt.xticks(rotation=45)
+plt.show()
+
+# 5 Mapa de calor
+heatmap_data = df.pivot_table(
+    values='GRAVEDAD_ACCIDENTE',
+    index='CONDICION_VICTIMA',
+    columns='RANGO_EDAD',
+    aggfunc=lambda x: (x == 'muerto').mean()
+)
+
+plt.figure(figsize=(10, 6))
+sns.heatmap(heatmap_data, annot=True, cmap='Reds', fmt=".2f")
+plt.title('Proporción de fallecidos por condición y rango de edad')
+plt.ylabel('Condición de la víctima')
+plt.xlabel('Rango de edad')
+plt.tight_layout()
+plt.show()
+
+# 6 Distribución por sexo y condición
+plt.figure()
+sns.countplot(data=df, x='SEXO_VICTIMA', hue='CONDICION_VICTIMA')
+plt.title('Sexo vs Rol en el Accidente')
+plt.show()
+
+# 7 Distribución por tipo de accidente
+plt.figure()
+sns.countplot(data=df, x='CLASE_ACCIDENTE', order=df['CLASE_ACCIDENTE'].value_counts().index)
+plt.title('Tipos de Accidente')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# Modelados
+# Modelo 1 Random Forest para predecir la gravedad del accidente (modelo de clasificación supervisada)
+
+# Importar librerias necesarias
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+
+#Cargar y limpiar datos,
+df['GRAVEDAD_BINARIA'] = df['GRAVEDAD_ACCIDENTE'].apply(lambda x: 1 if x == 'muerto' else 0)
+
+#Variables predictoras (puedes ajustar según tus datos),
+variables = ['SEXO_VICTIMA', 'EDAD_VICTIMA', 'CONDICION_VICTIMA', 'CLASE_ACCIDENTE', 'DIA_SEMANA']
+
+#Quitar filas con valores faltantes,
+df_modelo = df[variables + ['GRAVEDAD_BINARIA']].dropna()
+
+#convertimos las variables de texto a numero (columna binaria 0 o 1),
+df_modelo = pd.get_dummies(df_modelo, columns=['SEXO_VICTIMA', 'CONDICION_VICTIMA', 'CLASE_ACCIDENTE', 'DIA_SEMANA'], drop_first=True)
+
+#Separar X e y,
+X = df_modelo.drop('GRAVEDAD_BINARIA', axis=1) #todo menos la columna de gravedad
+y = df_modelo['GRAVEDAD_BINARIA']
+
+#Dividir en conjunto de entrenamiento y prueba,
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+#entrenamiento del modelo
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+modelo.fit(X_train, y_train)
+
+#Hacer predicciones y evaluar el modelo
+y_pred = modelo.predict(X_test) 
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nReporte de clasificación:\n", classification_report(y_test, y_pred))
+
+from sklearn.metrics import ConfusionMatrixDisplay
+ConfusionMatrixDisplay.from_estimator(modelo, X_test, y_test, display_labels=["No Muerto", "Muerto"], cmap="Reds")
+plt.title("Matriz de Confusión")
+plt.show()
+
+# Modelo 2 K-means: Clustering de zonas por frecuencia de accidentes
+
+from sklearn.cluster import KMeans
+import numpy as np
+ 
+# Preparamos los datos: agrupamos por dirección y día de la semana
+zonas_frecuencia = df.groupby(['DIRECCION_ACCIDENTE', 'DIA_SEMANA']).size().reset_index(name='FRECUENCIA')
+ 
+# Convertimos los días a números para el modelo
+dias_map = {'Monday':0, 'Tuesday':1, 'Wednesday':2, 'Thursday':3, 'Friday':4, 'Saturday':5, 'Sunday':6}
+zonas_frecuencia['DIA_NUM'] = zonas_frecuencia['DIA_SEMANA'].map(dias_map)
+ 
+# Seleccionamos las variables para clustering
+X_cluster = zonas_frecuencia[['FRECUENCIA', 'DIA_NUM']]
+ 
+# Elegimos el número de clusters (puedes ajustar este valor)
+kmeans = KMeans(n_clusters=4, random_state=42)
+zonas_frecuencia['CLUSTER'] = kmeans.fit_predict(X_cluster)
+ 
+# Visualización de los clusters
+plt.figure(figsize=(10,6))
+sns.scatterplot(data=zonas_frecuencia, x='DIA_NUM', y='FRECUENCIA', hue='CLUSTER', palette='Set2')
+plt.title('Clusters de frecuencia de accidentes por día y zona')
+plt.xlabel('Día de la semana (0=Lunes)')
+plt.ylabel('Frecuencia de accidentes')
+plt.show()
+ 
+# Mostrar las zonas más críticas de cada cluster
+for c in zonas_frecuencia['CLUSTER'].unique():
+    top_zonas = zonas_frecuencia[zonas_frecuencia['CLUSTER'] == c].sort_values('FRECUENCIA', ascending=False).head(3)
+    print(f"\nCluster {c} - Zonas y días más críticos:")
+    print(top_zonas[['DIRECCION_ACCIDENTE', 'DIA_SEMANA', 'FRECUENCIA']])
