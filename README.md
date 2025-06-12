@@ -56,7 +56,16 @@ Analizar y visualizar los patrones de accidentalidad vial en Barranquilla, ident
    Se aplicaron modelos como árboles de decisión, random forest y análisis de mortalidad por zonas.
 
 ---
+### 🔧 **Stack Tecnológico**
 
+| **Categoría** | **Herramientas** |
+|---------------|------------------|
+| **Análisis de Datos** | ![Pandas](https://img.shields.io/badge/pandas-150458?style=flat&logo=pandas&logoColor=white) ![NumPy](https://img.shields.io/badge/numpy-013243?style=flat&logo=numpy&logoColor=white) |
+| **Visualización** | ![Matplotlib](https://img.shields.io/badge/matplotlib-11557c?style=flat&logo=python&logoColor=white) ![Seaborn](https://img.shields.io/badge/seaborn-3776ab?style=flat&logo=python&logoColor=white) |
+| **Machine Learning** | ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat&logo=scikit-learn&logoColor=white) |
+| **Fuente de Datos** | [Datos Abiertos Colombia](https://www.datos.gov.co/) 🇨🇴 |
+
+---
 ## Nuestro equipo
 
 | Nombre              | Rol                                      |
