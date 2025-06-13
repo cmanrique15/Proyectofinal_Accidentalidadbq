@@ -61,9 +61,12 @@ Analizar y visualizar los patrones de accidentalidad vial en Barranquilla, ident
 | **Categoría** | **Herramientas** |
 |---------------|------------------|
 | **Análisis de Datos** | ![Pandas](https://img.shields.io/badge/pandas-150458?style=flat&logo=pandas&logoColor=white) ![NumPy](https://img.shields.io/badge/numpy-013243?style=flat&logo=numpy&logoColor=white) |
+| **Análisis Geoespacial** | ![GeoPandas](https://img.shields.io/badge/geopandas-139C5A?style=flat&logo=python&logoColor=white) |
 | **Visualización** | ![Matplotlib](https://img.shields.io/badge/matplotlib-11557c?style=flat&logo=python&logoColor=white) ![Seaborn](https://img.shields.io/badge/seaborn-3776ab?style=flat&logo=python&logoColor=white) |
 | **Machine Learning** | ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat&logo=scikit-learn&logoColor=white) |
 | **Fuente de Datos** | [Datos Abiertos Colombia](https://www.datos.gov.co/) 🇨🇴 |
+
+---
 
 ---
 
@@ -121,3 +124,30 @@ Analizar y visualizar los patrones de accidentalidad vial en Barranquilla, ident
 > - ✅ **Recomendaciones basadas en evidencia** para política pública
 
 ---
+**⭐ Si este proyecto te fue útil, ¡no olvides darle una estrella! ⭐**
+
+### 🤝 **Colabora con Nosotros**
+¿Interesado en colaborar? Contáctanos para proyectos de investigación en:
+- 🚦 Análisis de movilidad urbana
+- 📊 Ciencia de datos aplicada al transporte  
+- 🗺️ Sistemas de información geográfica
+- 🤖 Machine Learning para seguridad vial
+
+![Footer](https://img.shields.io/badge/Made%20with-%E2%9D%A4%EF%B8%8F-red.svg)
+![Colombia](https://img.shields.io/badge/Made%20in-Colombia%20🇨🇴-yellow.svg)
+![Research](https://img.shields.io/badge/Academic-Research-purple.svg)
+
+---
+
+### 📚 **Citar este Trabajo**
+```bibtex
+@misc{datawizards2025barranquilla,
+  title={Análisis de Accidentalidad Vial en Barranquilla (2021-2025)},
+  author={DATA WIZARDS Research Team},
+  year={2025},
+  publisher={Bootcamp Keycode},
+  url={https://github.com/datawizards/barranquilla-traffic-analysis}
+}
+```
+
+</div>
