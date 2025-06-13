@@ -145,7 +145,7 @@ Analizar y visualizar los patrones de accidentalidad vial en Barranquilla, ident
   title={Análisis de Accidentalidad Vial en Barranquilla (2021-2025)},
   author={DATA WIZARDS Research Team},
   year={2025},
-  publisher={Universidad del Atlántico},
+  publisher={Bootcamp Keycode},
   url={https://github.com/datawizards/barranquilla-traffic-analysis}
 }
 ```
